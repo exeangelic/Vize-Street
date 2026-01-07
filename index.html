@@ -10,13 +10,15 @@
         :root {
             --black: #000000;
             --white: #FFFFFF;
-            --light-gray: #f5f5f5;
-            --medium-gray: #d3d3d3;
+            --light-gray: #fef6fb;
+            --medium-gray: #f8dcec;
             --dark-gray: #333333;
-            --accent: #ff006e;
-            --accent-light: #ff4d94;
-            --accent-glow: rgba(255, 0, 110, 0.3);
-            --wolf-pink: #ff77aa;
+            --accent: #FF3D9E; /* vivid pink */
+            --accent-light: #FF86BF; /* lighter pink highlight */
+            --accent-darker: #5A0031; /* very dark pink for backgrounds */
+            --accent-dark: #2A0016; /* near-black pink */
+            --accent-glow: rgba(255, 61, 158, 0.22);
+            --vivid-purple: #FF77B6;
             --font-primary: 'Inter', sans-serif;
             --font-secondary: 'Space Grotesk', sans-serif;
         }
@@ -83,22 +85,36 @@
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.06); }
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
 
         @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
+            0% { background-position: -500px 0; }
+            100% { background-position: 500px 0; }
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
-            50% { box-shadow: 0 0 30px var(--accent-glow); }
+            0%, 100% { box-shadow: 0 0 24px var(--accent-glow); }
+            50% { box-shadow: 0 0 36px var(--accent-glow); }
+        }
+
+        /* Neon text glow */
+        @keyframes neon {
+            0% { text-shadow: 0 0 6px rgba(255,77,171,0.12), 0 0 18px rgba(255,61,158,0.10); }
+            50% { text-shadow: 0 0 10px rgba(255,77,171,0.18), 0 0 28px rgba(255,61,158,0.14); }
+            100% { text-shadow: 0 0 6px rgba(255,77,171,0.12), 0 0 18px rgba(255,61,158,0.10); }
+        }
+
+        /* Smooth gradient pan for hero */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         body {
@@ -118,14 +134,14 @@
 
         /* Header & Navigation */
         header {
-            background: linear-gradient(90deg, var(--black) 0%, #1a1a1a 100%);
+            background: linear-gradient(90deg, var(--accent-dark) 0%, var(--accent-darker) 100%);
             color: var(--white);
             padding: 1.5rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 2px solid var(--accent);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 0 40px rgba(255,61,158,0.04);
             animation: slideDown 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backdrop-filter: blur(10px);
         }
@@ -158,8 +174,8 @@
         .logo .brand-icon svg {
             width: 100%;
             height: 100%;
-            fill: var(--wolf-pink);
-            filter: drop-shadow(0 6px 18px rgba(255, 119, 170, 0.18));
+            fill: var(--vivid-purple);
+            filter: drop-shadow(0 6px 18px rgba(255,77,171,0.18));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
@@ -174,12 +190,12 @@
 
         .logo:hover .brand-icon svg {
             transform: translateY(-3px) scale(1.05);
-            filter: drop-shadow(0 12px 30px rgba(255, 119, 170, 0.28));
+            filter: drop-shadow(0 12px 30px rgba(255,77,171,0.28));
         }
 
         .logo:hover .brand-icon img {
             transform: translateY(-3px) scale(1.05);
-            filter: drop-shadow(0 12px 30px rgba(255, 119, 170, 0.28));
+            filter: drop-shadow(0 12px 30px rgba(255,77,171,0.28));
         }
 
         .logo .brand-text {
@@ -238,8 +254,8 @@
             position: relative;
             cursor: pointer;
             font-size: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            animation: pulse 2s infinite;
+            transition: all 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: pulse 1.6s infinite, glow 4s ease-in-out infinite;
         }
 
         .cart-icon:hover {
@@ -266,7 +282,9 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-darker) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 10s linear infinite, fadeIn 0.8s ease;
             color: var(--white);
             text-align: center;
             padding: 8rem 2rem;
@@ -278,13 +296,14 @@
         .hero::before {
             content: '';
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 600px;
+            height: 600px;
             background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
             border-radius: 50%;
-            top: -100px;
-            right: -100px;
-            animation: float 6s ease-in-out infinite;
+            top: -200px;
+            right: -150px;
+            animation: float 6s ease-in-out infinite, glow 3.5s ease-in-out infinite;
+            opacity: 0.9;
         }
 
         .hero h1 {
@@ -296,11 +315,15 @@
             text-transform: uppercase;
             position: relative;
             z-index: 1;
-            animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s backwards;
-            background: linear-gradient(135deg, #ffffff 0%, var(--accent-light) 100%);
+            animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s backwards, neon 4s ease-in-out infinite, shimmer 2.5s linear infinite;
+            animation-iteration-count: 1, infinite, infinite;
+            background: linear-gradient(90deg, var(--accent-light) 0%, #ffffff 60%);
+            background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            /* apply shimmer on the gradient */
+            -webkit-mask-image: linear-gradient(90deg, transparent 10%, black 25%, black 75%, transparent 90%);
         }
 
         .hero p {
@@ -350,7 +373,7 @@
             color: var(--white);
             background: var(--accent);
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 15px 40px rgba(255,61,158,0.28);
         }
 
         /* Main Content */
@@ -406,7 +429,7 @@
 
         .product-card:hover {
             transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(255, 0, 110, 0.2), 0 0 40px rgba(255, 0, 110, 0.1);
+            box-shadow: 0 30px 80px rgba(255,61,158,0.22), 0 0 48px rgba(255,61,158,0.12);
             border-color: var(--accent);
         }
 
@@ -526,7 +549,7 @@
 
         .add-to-cart:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 15px 36px rgba(91, 0, 230, 0.28);
         }
 
         /* Cart Modal */
@@ -583,7 +606,7 @@
         }
 
         .close-cart:hover {
-            background: rgba(255, 0, 110, 0.2);
+            background: rgba(255,61,158,0.18);
             transform: rotate(90deg);
         }
 
@@ -619,7 +642,7 @@
         }
 
         .cart-item:hover {
-            box-shadow: 0 10px 25px rgba(255, 0, 110, 0.1);
+            box-shadow: 0 12px 28px rgba(255,61,158,0.08);
             border-color: var(--accent);
             transform: translateX(5px);
         }
@@ -714,7 +737,7 @@
 
         .checkout-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 16px 36px rgba(91, 0, 230, 0.28);
         }
 
         .checkout-btn:disabled {
@@ -748,8 +771,8 @@
             max-width: 550px;
             padding: 3rem;
             border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 0, 110, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.32);
+            border: 1px solid rgba(255,61,158,0.08);
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -790,7 +813,7 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(255, 0, 110, 0.1);
+            box-shadow: 0 0 0 3px rgba(255,61,158,0.08);
             transform: translateY(-2px);
         }
 
@@ -837,7 +860,7 @@
 
         .submit-order:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 15px 36px rgba(91, 0, 230, 0.28);
         }
 
         .cancel-order {
@@ -862,14 +885,14 @@
         .contact-section::before {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 0, 110, 0.1) 0%, transparent 70%);
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(255,61,158,0.08) 0%, transparent 70%);
             border-radius: 50%;
             top: -200px;
             right: -200px;
             z-index: 0;
-            animation: float 8s ease-in-out infinite;
+            animation: float 8s ease-in-out infinite, glow 5s ease-in-out infinite;
         }
 
         .contact-container {
@@ -927,7 +950,7 @@
 
         .contact-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(255, 0, 110, 0.15);
+            box-shadow: 0 20px 50px rgba(255,61,158,0.12);
             border: 1px solid var(--accent);
         }
 
@@ -997,7 +1020,7 @@
             font-size: 0.9rem;
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 0, 110, 0.2);
+            border-top: 1px solid rgba(255,61,158,0.12);
         }
 
         /* Product Detail Page Styles */
@@ -1033,7 +1056,7 @@
             color: var(--white);
             border-color: var(--accent);
             transform: translateX(-5px);
-            box-shadow: 0 12px 30px rgba(255, 0, 110, 0.12);
+            box-shadow: 0 12px 30px rgba(255,61,158,0.12);
         }
 
         .detail-grid {
@@ -1127,7 +1150,7 @@
 
         .thumbnail.active {
             border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 0 28px rgba(255,61,158,0.28);
         }
 
         .product-detail-info {
@@ -1353,7 +1376,7 @@
 
         .detail-add-to-cart-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.3);
+            box-shadow: 0 16px 36px rgba(91, 0, 230, 0.28);
         }
 
         .detail-wishlist-btn {
@@ -1492,10 +1515,58 @@
                 min-width: 100%;
             }
         }
+
+        /* Background live animation */
+        #bgAnimation {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 20% 20%, rgba(255,61,158,0.12) 0%, transparent 18%), radial-gradient(ellipse at 80% 80%, rgba(255,121,178,0.09) 0%, transparent 20%);
+            background-size: 600% 600%;
+            animation: gradientShift 18s linear infinite;
+            mix-blend-mode: screen;
+            filter: blur(20px) saturate(120%);
+            opacity: 0.95;
+        }
+
+        /* Orbs */
+        .bg-orb {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.12;
+            mix-blend-mode: screen;
+        }
+        .bg-orb.orb1 { background: radial-gradient(circle, rgba(255,61,158,0.35) 0%, transparent 60%); top: 5%; left: 10%; animation: float 9s ease-in-out infinite; }
+        .bg-orb.orb2 { background: radial-gradient(circle, rgba(255,121,178,0.32) 0%, transparent 60%); bottom: 10%; right: 5%; animation: float 11s ease-in-out infinite reverse; }
+        .bg-orb.orb3 { background: radial-gradient(circle, rgba(255,121,178,0.24) 0%, transparent 60%); top: 40%; right: 25%; width: 320px; height: 320px; animation: float 16s ease-in-out infinite; }
+
+        /* Drift keyframes for orbs */
+        @keyframes orbDrift {
+            0% { transform: translateY(0) translateX(0) scale(1); }
+            50% { transform: translateY(-40px) translateX(20px) scale(1.05); }
+            100% { transform: translateY(0) translateX(0) scale(1); }
+        }
+
+        .bg-orb { animation: orbDrift 12s ease-in-out infinite; }
+
+        /* Music and theme selectors removed — using pink theme only */
+
     </style>
+
+    <!-- EmailJS SDK (client-side only) -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
     <a class="skip-link" href="#mainContent">Skip to content</a> 
+    <div id="bgAnimation" aria-hidden="true">
+        <div class="bg-orb orb1"></div>
+        <div class="bg-orb orb2"></div>
+        <div class="bg-orb orb3"></div>
+    </div>
     <!-- Header -->
     <header>
         <div class="header-container">
@@ -1513,6 +1584,9 @@
                     <li><a href="#contact" onclick="showHomePage()">Contact</a></li>
                 </ul>
             </nav>
+
+
+
             <div class="cart-icon" id="cartIcon">
                 <i class="fas fa-shopping-bag"></i>
                 <span class="cart-count" id="cartCount">0</span>
@@ -1720,7 +1794,7 @@
     <div class="checkout-modal" id="checkoutModal">
     <div class="checkout-form">
         <h2>Complete Your Order</h2>
-        <form id="checkoutForm" action="https://getform.io/f/bkkenrgb" method="POST">
+        <form id="checkoutForm" action="https://formspree.io/f/mnjqbbqr" method="POST">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
                 <input type="text" id="fullName" name="name" required>
@@ -1761,8 +1835,16 @@
         </div>
     </footer>
 
+
+
     <script>
         // State Management
+        // Initialize EmailJS (replace 'YOUR_EMAILJS_PUBLIC_KEY' with your EmailJS Public Key)
+        if (typeof emailjs !== 'undefined') {
+            try { emailjs.init('57Zy9qIwWc3YVynob'); } catch(e) { console.warn('EmailJS init failed', e); }
+        } else {
+            console.warn('EmailJS SDK not loaded. Make sure the CDN script is reachable.');
+        }
         let currentPage = 'home';
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentProduct = null;
@@ -2096,21 +2178,65 @@
                 checkoutModal.classList.remove('active');
             });
 
-            // Checkout form submission
+            // Checkout form submission (using EmailJS)
             checkoutForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                
+
+                const submitBtn = checkoutForm.querySelector('.submit-order');
+                submitBtn.disabled = true;
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+
                 const fullName = document.getElementById('fullName').value;
                 const email = document.getElementById('email').value;
-                
-                alert(`Thank you for your order, ${fullName}! Your order has been placed successfully. You will receive a confirmation email at ${email}.`);
-                
-                cart = [];
-                saveCart();
-                updateCartDisplay();
-                
-                checkoutModal.classList.remove('active');
-                checkoutForm.reset();
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const city = document.getElementById('city').value;
+
+                const cartItemsString = (cart && cart.length) ? cart.map(item => `${item.name} x ${item.quantity} @ TND ${item.price.toFixed(2)}`).join('\n') : 'No items';
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                const templateParams = {
+                    full_name: fullName,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    city: city,
+                    cart_items: cartItemsString,
+                    total_price: `TND ${total.toFixed(2)}`
+                };
+
+                // TODO: Replace with your EmailJS Service ID and Template ID
+                const SERVICE_ID = 'service_2cnpnnl';
+                const TEMPLATE_ID = 'template_uno1k3e';
+
+                if (typeof emailjs === 'undefined') {
+                    alert('Email service not available. Please try again later.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
+
+                emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+                .then((response) => {
+                    console.log('EmailJS success:', response.status, response.text);
+                    alert(`Thank you for your order, ${fullName}! A confirmation email has been sent to ${email}.`);
+
+                    cart = [];
+                    saveCart();
+                    updateCartDisplay();
+
+                    checkoutModal.classList.remove('active');
+                    checkoutForm.reset();
+                })
+                .catch((error) => {
+                    console.error('EmailJS error:', error);
+                    alert('Something went wrong while sending your order. Please try again or contact support.');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                });
             });
 
             // Close modals on outside click
@@ -2154,4 +2280,3 @@
     </script>
 </body>
 </html>
-
