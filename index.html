@@ -732,6 +732,24 @@
             color: var(--gray-800);
             font-size: 1.125rem;
             line-height: 1.6;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+            max-width: 100%;
+        }
+        .contact-card p a {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;white-space: nowrap;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-card p a {
+                white-space: normal;
+                word-break: break-all;
+            }
         }
 
         .product-detail-page {
